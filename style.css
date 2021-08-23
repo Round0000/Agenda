@@ -54,6 +54,13 @@ body {
   gap: .5em;
 }
 
+/* Schedule modal */
+
+.scheduleModal {
+  background-color: #f2f5f6;
+  padding: 1em;
+}
+
 
 /* Calendar */
 

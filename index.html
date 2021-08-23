@@ -14,22 +14,23 @@
   </head>
   <body>
     <div class="container">
-
-      <div class="homescreen">
+      <div class="homescreen d-none">
         <form id="create">
-          <label>Titre
-            <input type="text" name="title">
+          <label
+            >Titre
+            <input type="text" name="title" />
           </label>
 
-          <label>Description
+          <label
+            >Description
             <textarea name="description" cols="30" rows="3"></textarea>
           </label>
 
-          <input type="submit" value="Créer">
+          <input type="submit" value="Créer" />
         </form>
       </div>
 
-      <div class="cal d-none">
+      <div class="cal">
         <div class="cal-header">
           <button class="btn btn-prev" aria-label="Previous Month">
             <img src="./img/arrow-left.svg" alt="" aria-hidden="true" />
@@ -56,6 +57,18 @@
         </div>
       </div>
 
+      <div class="scheduleModal d-none">
+        <p class="modalDate"></p>
+        <form>
+          <label>Heure de début
+            <input type="time" name="timeStart">
+          </label>
+          <label>Heure de fin
+            <input type="time" name="timeEnd">
+          </label>
+          <input type="submit" value="Créer">
+        </form>
+      </div>
     </div>
     <!--  -->
     <script src="app.js"></script>

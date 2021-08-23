@@ -175,6 +175,9 @@ let currentCalMode;
 const uiHomescreen = document.querySelector(".homescreen");
 const uiFormCreate = document.querySelector("form#create");
 const uiCalendar = document.querySelector(".cal");
+const uiScheduleModal = document.querySelector(".scheduleModal");
+const uiScheduleModalDate = document.querySelector(".modalDate");
+const uiScheduleModalForm = document.querySelector(".scheduleModal form");
 
 uiFormCreate.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -183,8 +186,6 @@ uiFormCreate.addEventListener("submit", (e) => {
   initCalCreation();
   uiHomescreen.classList.add("d-none");
   uiFormCreate.reset();
-
-  // afficher calendrier et interface
 });
 
 const initCalCreation = () => {
@@ -194,3 +195,26 @@ const initCalCreation = () => {
 
   outputCal();
 };
+
+const openModal = (date) => {
+  uiScheduleModalDate.innerText = date;
+};
+
+uiCalendar.addEventListener("click", (e) => {
+  if (e.target.classList.contains("daynum")) {
+    uiScheduleModal.classList.remove("d-none");
+    openModal(e.target.dataset.date);
+  }
+});
+
+uiScheduleModalForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  console.log(e.target.timeStart.value);
+  console.log(e.target.timeEnd.value);
+});
+
+//
+//
+//
+outputCal();
