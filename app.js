@@ -1,43 +1,10 @@
-// PWA Service Worker
-
-// if ("serviceWorker" in navigator) {
-//   navigator.serviceWorker.register("./sw.js");
-// }
-
 // Data storage
 let markedDates = {};
 
-const saveDate = () => {
-  document.querySelectorAll(".daynum").forEach((item) => {
-    if (item.classList.length > 1) {
-      markedDates[item.dataset.date] =
-        [item.classList[1]] +
-        " " +
-        [item.classList[2]] +
-        " " +
-        [item.classList[3]];
-    } else if (markedDates[item.dataset.date]) {
-      delete markedDates[item.dataset.date];
-    }
-  });
-  localStorage.setItem("markedDates", JSON.stringify(markedDates));
-};
-
-// Erase data from Local Storage
-const reset = document.querySelector("#reset");
-reset.addEventListener("click", () => {
-  markedDates = {};
-  localStorage.clear();
-});
-//
-
-let currentClr = null;
-
-const clrOptions = document.querySelectorAll(".clrOption");
 const btnPrev = document.querySelector(".btn-prev");
 const btnNext = document.querySelector(".btn-next");
 
-btnPrev.addEventListener("click", (e) => {
+const goPrev = () => {
   date.setMonth(date.getMonth() - 1);
   outputCal();
 
@@ -45,9 +12,9 @@ btnPrev.addEventListener("click", (e) => {
   setTimeout(() => {
     btnPrev.classList.remove("anim-prev");
   }, 300);
-});
+};
 
-btnNext.addEventListener("click", (e) => {
+const goNext = () => {
   date.setMonth(date.getMonth() + 1);
   outputCal();
 
@@ -55,46 +22,27 @@ btnNext.addEventListener("click", (e) => {
   setTimeout(() => {
     btnNext.classList.remove("anim-next");
   }, 300);
-});
-
-document.addEventListener("click", (e) => {
-  const d = e.target;
-
-  if (d.classList.contains("daynum")) {
-    if (currentClr && d.classList.length <= 2) {
-      d.classList.toggle(currentClr);
-      d.style.background = `linear-gradient(-45deg, ${
-        colors[d.classList[1]]
-      } 49%, ${colors[d.classList[2]]} 51%)`;
-    } else if (!currentClr) {
-      d.classList.value = "daynum";
-      d.style.background = "";
-    }
-
-    saveDate();
-  }
-
-  if (d.classList.contains("clrOption")) {
-    clrOptions.forEach((item) => item.classList.remove("clrOption--current"));
-    if (currentClr === d.dataset.clr) {
-      currentClr = null;
-    } else {
-      currentClr = d.dataset.clr;
-      d.classList.add("clrOption--current");
-    }
-  }
-});
-
-// Colors
-const colors = {
-  clrGray: "#6b7280",
-  clrRed: "#ef4444",
-  clrYellow: "#f59e0b",
-  clrGreen: "#10b981",
-  clrBlue: "#3b82f6",
-  clrPurple: "#7c3aed",
-  clrPink: "#ec4899",
 };
+
+btnPrev.addEventListener("click", (e) => {
+  goPrev();
+});
+
+window.addEventListener("keydown", (event) => {
+  if (event.code === "ArrowLeft") {
+    goPrev();
+  }
+});
+
+btnNext.addEventListener("click", (e) => {
+  goNext();
+});
+
+window.addEventListener("keydown", (event) => {
+  if (event.code === "ArrowRight") {
+    goNext();
+  }
+});
 
 //
 // Date management
@@ -115,7 +63,7 @@ const outputCal = () => {
     0
   ).getDate();
   // Modify next line to set week's first day //
-  const firstDayIndex = date.getDay() - 1;
+  const firstDayIndex = date.getDay() === 0 ? 6 : date.getDay() - 1;
 
   const lastDayIndex = new Date(
     date.getFullYear(),
@@ -129,22 +77,6 @@ const outputCal = () => {
   } else {
     nextDays = 7 - lastDayIndex;
   }
-
-  // Months in english
-  // const months = [
-  //   "January",
-  //   "February",
-  //   "March",
-  //   "April",
-  //   "May",
-  //   "June",
-  //   "July",
-  //   "August",
-  //   "September",
-  //   "October",
-  //   "November",
-  //   "December",
-  // ];
 
   const months = [
     "Janvier",
@@ -234,48 +166,31 @@ const outputCal = () => {
   days.forEach((day) => monthDays.append(day));
 };
 
-// Initial Calendar Output
-if (localStorage.getItem("markedDates")) {
-  markedDates = JSON.parse(
-    localStorage.getItem("markedDates", JSON.stringify(markedDates))
-  );
-}
+//
+// Gestion d'agenda
+//
 
-outputCal();
+let currentCalMode;
 
-// Tim
-const fileSelector = document.getElementById("file-selector");
-fileSelector.addEventListener("change", (event) => {
-  const fileList = event.target.files;
-  readFile(fileList[0]);
+const uiHomescreen = document.querySelector(".homescreen");
+const uiFormCreate = document.querySelector("form#create");
+const uiCalendar = document.querySelector(".cal");
+
+uiFormCreate.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  console.log(uiFormCreate.title.value + ", " + uiFormCreate.description.value);
+  initCalCreation();
+  uiHomescreen.classList.add("d-none");
+  uiFormCreate.reset();
+
+  // afficher calendrier et interface
 });
 
-function readFile(file) {
-  const reader = new FileReader();
-  reader.readAsText(file);
+const initCalCreation = () => {
+  currentCalMode = "creation";
 
-  reader.onload = function () {
-    JSON.parse(reader.result).forEach((item) => {
-      const date = new Date(item);
-      let dateToMark =
-        markedDates[
-          `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-        ];
+  uiCalendar.classList.remove("d-none");
 
-      if (!dateToMark) {
-        markedDates[
-          `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-        ] = "clrRed";
-      } else
-        markedDates[
-          `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-        ] = "clrRed" + " " + dateToMark;
-    });
-    localStorage.setItem("markedDates", JSON.stringify(markedDates));
-    outputCal();
-  };
-
-  reader.onerror = function () {
-    console.log(reader.error);
-  };
-}
+  outputCal();
+};

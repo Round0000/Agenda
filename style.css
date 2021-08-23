@@ -24,12 +24,38 @@ body {
   font-size: 1.25rem;
 }
 
+.d-none {
+  display: none !important;
+}
+
 /*  */
 .container {
   width: 100%;
   max-width: 600px;
   margin: auto;
 }
+
+/* Homescreen */
+
+.homescreen {
+  background-color: #f2f5f2;
+  padding: 1em;
+}
+
+.homescreen form {
+  display: flex;
+  flex-direction: column;
+}
+
+.homescreen label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+  gap: .5em;
+}
+
+
+/* Calendar */
 
 .cal-header {
   display: flex;

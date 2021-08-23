@@ -14,7 +14,22 @@
   </head>
   <body>
     <div class="container">
-      <div class="cal">
+
+      <div class="homescreen">
+        <form id="create">
+          <label>Titre
+            <input type="text" name="title">
+          </label>
+
+          <label>Description
+            <textarea name="description" cols="30" rows="3"></textarea>
+          </label>
+
+          <input type="submit" value="Créer">
+        </form>
+      </div>
+
+      <div class="cal d-none">
         <div class="cal-header">
           <button class="btn btn-prev" aria-label="Previous Month">
             <img src="./img/arrow-left.svg" alt="" aria-hidden="true" />
@@ -29,15 +44,6 @@
         </div>
         <div class="cal-body">
           <div class="cal-body-daynames">
-            <!--
-            <p class="dayname">Sun</p>
-            <p class="dayname">Mon</p>
-            <p class="dayname">Tue</p>
-            <p class="dayname">Wed</p>
-            <p class="dayname">Thu</p>
-            <p class="dayname">Fri</p>
-            <p class="dayname">Sat</p>
-             -->
             <p class="dayname">Lun</p>
             <p class="dayname">Mar</p>
             <p class="dayname">Mer</p>
@@ -50,20 +56,6 @@
         </div>
       </div>
 
-      <div class="clrmenu">
-        <div data-clr="clrGray" class="clrOption clrGray"></div>
-        <div data-clr="clrRed" class="clrOption clrRed"></div>
-        <div data-clr="clrYellow" class="clrOption clrYellow"></div>
-        <div data-clr="clrGreen" class="clrOption clrGreen"></div>
-        <div data-clr="clrBlue" class="clrOption clrBlue"></div>
-        <div data-clr="clrPurple" class="clrOption clrPurple"></div>
-        <div data-clr="clrPink" class="clrOption clrPink"></div>
-      </div>
-
-      <div class="admin">
-        <button id="reset">Reset</button>
-        <input type="file" id="file-selector" />
-      </div>
     </div>
     <!--  -->
     <script src="app.js"></script>
