@@ -266,8 +266,8 @@ body {
   gap: .5em;
 }
 
-.scheduleModal form input[type="submit"] {
-  padding: .25em 1.5em;
+.scheduleModal form input {
+  padding: .5em .75em;
 }
 
 .scheduleModal #loadCal {
