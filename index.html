@@ -59,11 +59,15 @@
 
       <div class="scheduleModal">
 
-        <div class="saveCal">
+        <div class="saveAndLoad">
           <button id="saveCal">Sauvegarder</button>
+          <form id="loadCal">
+            <input type="string" name="id">
+            <button>Charger</button>
+          </form>
         </div>
 
-        <form>
+        <form id="newTimeItem">
           <label>Heure de début
             <input type="time" name="timeStart" required>
           </label>

@@ -186,12 +186,16 @@ const outputCal = () => {
 
 let currentCalMode;
 
+const APIkey = "$2b$10$WAFNRNZjY0lcb5sEmtl5bunm4T4rmeCXxwAf5rwoMLvQFxwVjdKoi";
+
 const uiHomescreen = document.querySelector(".homescreen");
 const uiFormCreate = document.querySelector("form#create");
 const uiCalendar = document.querySelector(".cal");
 const uiScheduleModal = document.querySelector(".scheduleModal");
 const uiScheduleModalDate = document.querySelector(".modalDate");
-const uiScheduleModalForm = document.querySelector(".scheduleModal form");
+const uiScheduleModalForm = document.querySelector(
+  ".scheduleModal #newTimeItem"
+);
 const uiCreneauxList = document.getElementById("creneaux-mois");
 
 uiFormCreate.addEventListener("submit", (e) => {
@@ -267,8 +271,16 @@ uiCreneauxList.addEventListener("click", (e) => {
 
 // Sauvegarder Calendrier
 const saveCalBtn = document.getElementById("saveCal");
+const loadForm = document.getElementById("loadCal");
+
 saveCalBtn.addEventListener("click", (e) => {
-  exportToJsonFile();
+  saveDataToAPI();
+});
+
+loadForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  getDataFromAPI(e.target.id.value);
 });
 
 //
@@ -277,24 +289,35 @@ saveCalBtn.addEventListener("click", (e) => {
 outputCal();
 
 //
-function exportToJsonFile() {
-  let dataStr = JSON.stringify(markedDates);
-  let dataUri =
-    "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+// Store JSONbin
+function saveDataToAPI() {
+  let req = new XMLHttpRequest();
 
-  let exportFileDefaultName = "data.json";
+  req.onreadystatechange = () => {
+    if (req.readyState == XMLHttpRequest.DONE) {
+      console.log(JSON.parse(req.responseText).metadata.id);
+      document.querySelector('.saveAndLoad').innerHTML += JSON.parse(req.responseText).metadata.id;
+    }
+  };
 
-  let linkElement = document.createElement("a");
-  linkElement.setAttribute("href", dataUri);
-  linkElement.setAttribute("download", exportFileDefaultName);
-  linkElement.click();
+  req.open("POST", "https://api.jsonbin.io/v3/b", true);
+  req.setRequestHeader("Content-Type", "application/json");
+  req.setRequestHeader("X-Master-Key", APIkey);
+  req.send(JSON.stringify(markedDates));
 }
 
-fetch("./data/data2.json")
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    markedDates = data;
-    outputCal();
-  });
+function getDataFromAPI(id) {
+  let req = new XMLHttpRequest();
+
+  req.onreadystatechange = () => {
+    if (req.readyState == XMLHttpRequest.DONE) {
+      markedDates = JSON.parse(req.responseText);
+      outputCal();
+    }
+  };
+
+  req.open("GET", `https://api.jsonbin.io/v3/b/${id}/latest`, true);
+  req.setRequestHeader("X-Bin-Meta", false);
+  req.setRequestHeader("X-Master-Key", APIkey);
+  req.send();
+}

@@ -309,6 +309,16 @@ body {
   font-size: 1rem;
 }
 
+#creneaux-mois ul li {
+  margin: .5em 0;
+  cursor: pointer;
+  padding: .25em;
+}
+
+#creneaux-mois ul li:hover {
+  color: crimson;
+}
+
 
 /* Media queries */
 @media (min-width: 640px) {
