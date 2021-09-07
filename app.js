@@ -328,6 +328,6 @@ function getDataFromAPI(id) {
 const url = window.location.href;
 const indexOfQuery = url.indexOf("?") + 1;
 
-if(indexOfQuery) {
+if(url.includes("?")) {
   getDataFromAPI(url.slice(indexOfQuery));
 }
