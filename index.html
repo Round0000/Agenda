@@ -58,6 +58,11 @@
       </div>
 
       <div class="scheduleModal">
+
+        <div class="saveCal">
+          <button id="saveCal">Sauvegarder</button>
+        </div>
+
         <form>
           <label>Heure de début
             <input type="time" name="timeStart" required>
@@ -67,7 +72,11 @@
           </label>
           <input type="submit" value="Créer">
         </form>
+
+        <h2>Créneaux du mois</h2>
+        <ul id="creneaux-mois"></ul>
       </div>
+
     </div>
     <!--  -->
     <script src="app.js"></script>

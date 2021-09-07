@@ -155,9 +155,28 @@ const outputCal = () => {
 
   // Get marked dates
   const daynums = document.querySelectorAll(".daynum");
-  daynums.forEach((item) => {
-    if (markedDates.find((obj) => obj.date === item.dataset.date)) {
-      item.classList.add("clrBlue");
+  document.getElementById("creneaux-mois").innerHTML = "";
+  daynums.forEach((day) => {
+    if (markedDates[day.dataset.date]) {
+      day.dataset.marked = markedDates[day.dataset.date].time.length;
+      console.log(markedDates[day.dataset.date].time);
+
+      const newCreneauDate = document.createElement("LI");
+      newCreneauDate.innerHTML = day.dataset.date;
+
+      markedDates[day.dataset.date].time.forEach((creneau) => {
+        const newCreneauList = document.createElement("UL");
+        const newCreneauTime = document.createElement("LI");
+        newCreneauTime.innerHTML = creneau.start + " | " + creneau.end;
+        newCreneauList.appendChild(newCreneauTime);
+        newCreneauDate.appendChild(newCreneauList);
+        newCreneauTime.dataset.date = day.dataset.date;
+        newCreneauTime.dataset.start = creneau.start;
+        newCreneauTime.dataset.end = creneau.end;
+        newCreneauTime.classList.add("creneauItem");
+      });
+
+      uiCreneauxList.append(newCreneauDate);
     }
   });
 };
@@ -174,6 +193,7 @@ const uiCalendar = document.querySelector(".cal");
 const uiScheduleModal = document.querySelector(".scheduleModal");
 const uiScheduleModalDate = document.querySelector(".modalDate");
 const uiScheduleModalForm = document.querySelector(".scheduleModal form");
+const uiCreneauxList = document.getElementById("creneaux-mois");
 
 uiFormCreate.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -198,9 +218,12 @@ uiCalendar.addEventListener("click", (e) => {
       const newDayMark = (markedDates[e.target.dataset.date] = {});
       newDayMark.time = [];
       newDayMark.time.push(timeDefined);
+      console.log("added :", e.target.dataset.date, timeDefined);
+      outputCal();
     } else if (!markedDates[e.target.dataset.date].time.includes(timeDefined)) {
-      console.log("time added : " + timeDefined);
       markedDates[e.target.dataset.date].time.push(timeDefined);
+      console.log("added :", e.target.dataset.date, timeDefined);
+      outputCal();
     }
   }
 });
@@ -213,6 +236,40 @@ uiScheduleModalForm.addEventListener("submit", (e) => {
   timeDefined = {};
   timeDefined.start = e.target.timeStart.value;
   timeDefined.end = e.target.timeEnd.value;
+});
+
+//
+uiCreneauxList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("creneauItem")) {
+    const markedElement = markedDates[e.target.dataset.date];
+
+    const indexDuCreneau = markedElement.time.findIndex(
+      (item) =>
+        item.start === e.target.dataset.start &&
+        item.end === e.target.dataset.end
+    );
+
+    if (markedElement.time.length > 1) {
+      markedElement.time.splice(indexDuCreneau, 1);
+      console.log(
+        "removed :",
+        e.target.dataset.date,
+        e.target.dataset.start,
+        e.target.dataset.end
+      );
+    } else {
+      delete markedDates[e.target.dataset.date];
+      console.log("removed :", e.target.dataset.date);
+    }
+
+    outputCal();
+  }
+});
+
+// Sauvegarder Calendrier
+const saveCalBtn = document.getElementById("saveCal");
+saveCalBtn.addEventListener("click", (e) => {
+  console.log(Object.fromEntries(markedDates));
 });
 
 //

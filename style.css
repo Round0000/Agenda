@@ -200,7 +200,7 @@ body {
   background-color: #10b981;
 }
 .clrBlue {
-  background-color: #3b82f6;
+  background: linear-gradient(to top, #3b82f6 4px, transparent 0);
 }
 .clrPurple {
   background-color: #7c3aed;
@@ -253,6 +253,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #222;
 }
 
 .scheduleModal form label {
@@ -264,6 +268,47 @@ body {
 .scheduleModal form input[type="submit"] {
   padding: .25em 1.5em;
 }
+
+.daynum[data-marked] {
+  position: relative;
+}
+
+.daynum[data-marked]::before {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  letter-spacing: 4px;
+  color: burlywood;
+}
+.daynum[data-marked = "1"]::before {
+  content: '•';
+}
+.daynum[data-marked = "2"]::before {
+  content: '••';
+}
+.daynum[data-marked = "3"]::before {
+  content: '•••';
+}
+.daynum[data-marked = "4"]::before {
+  content: '••••';
+}
+.daynum[data-marked = "5"]::before {
+  content: '•••••';
+}
+.daynum[data-marked = "6"]::before {
+  content: '••••••';
+}
+
+#creneaux-mois {
+  padding-left: 1em;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#creneaux-mois ul {
+  padding-left: 1em;
+  font-size: 1rem;
+}
+
 
 /* Media queries */
 @media (min-width: 640px) {
