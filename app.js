@@ -296,7 +296,9 @@ function saveDataToAPI() {
   req.onreadystatechange = () => {
     if (req.readyState == XMLHttpRequest.DONE) {
       console.log(JSON.parse(req.responseText).metadata.id);
-      document.querySelector('.saveAndLoad').innerHTML += JSON.parse(req.responseText).metadata.id;
+      document.querySelector(".saveAndLoad").innerHTML += JSON.parse(
+        req.responseText
+      ).metadata.id;
     }
   };
 
@@ -320,4 +322,12 @@ function getDataFromAPI(id) {
   req.setRequestHeader("X-Bin-Meta", false);
   req.setRequestHeader("X-Master-Key", APIkey);
   req.send();
+}
+
+
+const url = window.location.href;
+const indexOfQuery = url.indexOf("?") + 1;
+
+if(indexOfQuery) {
+  getDataFromAPI(url.slice(indexOfQuery));
 }
