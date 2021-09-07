@@ -305,6 +305,8 @@ function saveDataToAPI() {
   req.open("POST", "https://api.jsonbin.io/v3/b", true);
   req.setRequestHeader("Content-Type", "application/json");
   req.setRequestHeader("X-Master-Key", APIkey);
+  req.setRequestHeader("X-Collection-Id", "61378da785791e1732a17083");
+  req.setRequestHeader("X-Bin-Name", `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`);
   req.send(JSON.stringify(markedDates));
 }
 
@@ -324,10 +326,10 @@ function getDataFromAPI(id) {
   req.send();
 }
 
+// get Data from URL query
 const url = window.location.href;
 const indexOfQuery = url.indexOf("?") + 1;
 
 if (url.includes("?")) {
-  console.log(url.slice(indexOfQuery));
   getDataFromAPI(url.slice(indexOfQuery));
 }
