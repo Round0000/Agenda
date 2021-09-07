@@ -1,5 +1,5 @@
 // Data storage
-let markedDates = [];
+let markedDates = {};
 
 const btnPrev = document.querySelector(".btn-prev");
 const btnNext = document.querySelector(".btn-next");
@@ -159,7 +159,6 @@ const outputCal = () => {
   daynums.forEach((day) => {
     if (markedDates[day.dataset.date]) {
       day.dataset.marked = markedDates[day.dataset.date].time.length;
-      console.log(markedDates[day.dataset.date].time);
 
       const newCreneauDate = document.createElement("LI");
       newCreneauDate.innerHTML = day.dataset.date;
@@ -269,10 +268,33 @@ uiCreneauxList.addEventListener("click", (e) => {
 // Sauvegarder Calendrier
 const saveCalBtn = document.getElementById("saveCal");
 saveCalBtn.addEventListener("click", (e) => {
-  console.log(Object.fromEntries(markedDates));
+  exportToJsonFile();
 });
 
 //
 //
 //
 outputCal();
+
+//
+function exportToJsonFile() {
+  let dataStr = JSON.stringify(markedDates);
+  let dataUri =
+    "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+
+  let exportFileDefaultName = "data.json";
+
+  let linkElement = document.createElement("a");
+  linkElement.setAttribute("href", dataUri);
+  linkElement.setAttribute("download", exportFileDefaultName);
+  linkElement.click();
+}
+
+fetch("./data/data2.json")
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    markedDates = data;
+    outputCal();
+  });
