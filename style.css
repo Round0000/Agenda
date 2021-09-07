@@ -249,7 +249,7 @@ body {
 }
 
 /* Agenda styles */
-.scheduleModal form {
+.scheduleModal #newTimeItem {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -257,9 +257,10 @@ body {
   margin-top: 1em;
   padding-bottom: 1em;
   border-bottom: 1px solid #222;
+  flex-wrap: wrap;
 }
 
-.scheduleModal form label {
+.scheduleModal #newTimeItem label {
   font-size: 1rem;
   display: flex;
   gap: .5em;
@@ -267,6 +268,19 @@ body {
 
 .scheduleModal form input[type="submit"] {
   padding: .25em 1.5em;
+}
+
+.scheduleModal #loadCal {
+  margin-top: 1em;
+}
+
+.scheduleModal #loadCal input {
+  width: 15em;
+  padding: .5em .25em;
+}
+
+.saveAndLoad button {
+  padding: .5em .75em;
 }
 
 .daynum[data-marked] {
