@@ -324,10 +324,10 @@ function getDataFromAPI(id) {
   req.send();
 }
 
-
 const url = window.location.href;
 const indexOfQuery = url.indexOf("?") + 1;
 
-if(url.includes("?")) {
+if (url.includes("?")) {
+  console.log(url.slice(indexOfQuery));
   getDataFromAPI(url.slice(indexOfQuery));
 }
