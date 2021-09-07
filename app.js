@@ -1,5 +1,5 @@
 // Data storage
-let markedDates = {};
+let markedDates = [];
 
 const btnPrev = document.querySelector(".btn-prev");
 const btnNext = document.querySelector(".btn-next");
@@ -130,18 +130,6 @@ const outputCal = () => {
       pCurrent.classList.add("daynum");
     }
 
-    if (pCurrent.classList.length === 3) {
-      pCurrent.style.background = `linear-gradient(-45deg, ${
-        colors[pCurrent.classList[1]]
-      } 49%, ${colors[pCurrent.classList[2]]} 51%)`;
-    } else if (pCurrent.classList.length === 4) {
-      pCurrent.style.background = `linear-gradient(-45deg, ${
-        colors[pCurrent.classList[1]]
-      } 32%, ${colors[pCurrent.classList[2]]} 34% 65%, ${
-        colors[pCurrent.classList[3]]
-      } 67%)`;
-    }
-
     pCurrent.innerHTML = i;
     if (
       i === new Date().getDate() &&
@@ -164,6 +152,14 @@ const outputCal = () => {
 
   monthDays.innerHTML = "";
   days.forEach((day) => monthDays.append(day));
+
+  // Get marked dates
+  const daynums = document.querySelectorAll(".daynum");
+  daynums.forEach((item) => {
+    if (markedDates.find((obj) => obj.date === item.dataset.date)) {
+      item.classList.add("clrBlue");
+    }
+  });
 };
 
 //
@@ -196,22 +192,27 @@ const initCalCreation = () => {
   outputCal();
 };
 
-const openModal = (date) => {
-  uiScheduleModalDate.innerText = date;
-};
-
 uiCalendar.addEventListener("click", (e) => {
-  if (e.target.classList.contains("daynum")) {
-    uiScheduleModal.classList.remove("d-none");
-    openModal(e.target.dataset.date);
+  if (e.target.classList.contains("daynum") && timeDefined) {
+    if (!markedDates[e.target.dataset.date]) {
+      const newDayMark = (markedDates[e.target.dataset.date] = {});
+      newDayMark.time = [];
+      newDayMark.time.push(timeDefined);
+    } else if (!markedDates[e.target.dataset.date].time.includes(timeDefined)) {
+      console.log("time added : " + timeDefined);
+      markedDates[e.target.dataset.date].time.push(timeDefined);
+    }
   }
 });
+
+let timeDefined;
 
 uiScheduleModalForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  console.log(e.target.timeStart.value);
-  console.log(e.target.timeEnd.value);
+  timeDefined = {};
+  timeDefined.start = e.target.timeStart.value;
+  timeDefined.end = e.target.timeEnd.value;
 });
 
 //

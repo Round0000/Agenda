@@ -51,7 +51,7 @@ body {
   display: flex;
   flex-direction: column;
   margin-bottom: 1em;
-  gap: .5em;
+  gap: 0.5em;
 }
 
 /* Schedule modal */
@@ -60,7 +60,6 @@ body {
   background-color: #f2f5f6;
   padding: 1em;
 }
-
 
 /* Calendar */
 
@@ -247,6 +246,23 @@ body {
   color: #fff3;
   background-color: transparent;
   border: none;
+}
+
+/* Agenda styles */
+.scheduleModal form {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.scheduleModal form label {
+  font-size: 1rem;
+  display: flex;
+  gap: .5em;
+}
+
+.scheduleModal form input[type="submit"] {
+  padding: .25em 1.5em;
 }
 
 /* Media queries */
